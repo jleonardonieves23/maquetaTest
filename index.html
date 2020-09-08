@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html ng-app="maquetaTest">
+<head>
+	<title>Maqueta Table - response</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+</head>
+<body ng-controller="maquetaCtrl">
+	<div class="container" >
+		<div class="form-group row">
+			<label for="busqueda" class="col-sm-2 col-form-label">Busqueda</label>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" name="busqueda" ng-model="busqueda" placeholder="Ingrese lo que desee buscar">
+			</div>
+		</div>	
+		<div ng-show="edit" >
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="label">Label</label>
+					<input type="text" class="form-control" id="label" ng-model="dataEdit.labels">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="criticality">Criticality</label>
+					<input type="text" class="form-control" id="criticality" ng-model="dataEdit.criticality">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="timestamp">Timestamp</label>
+					<input type="text" class="form-control" id="timestamp"ng-model="dataEdit.timestamp">
+				</div>
+  			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="eventBody">EventBody</label>
+					<input type="text" class="form-control" id="eventBody" ng-model="dataEdit.eventBody.symbol">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="status">Status</label>
+					<input type="text" class="form-control" id="status" ng-model="dataEdit.status">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="checked">Checked</label>
+
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="visto" id="visto" value="visto" ng-model="dataEdit.checked" ng-checked="">
+						<label class="form-check-label" for="exampleRadios1"> Visto </label>
+					</div>	
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="noVisto" id="noVisto" ng-model="dataEdit.checked" value="no visto" ng-checked="">
+						<label class="form-check-label" for="noVisto"> No Visto </label>
+					</div>
+
+				</div>
+			</div>
+  			<div class="form-group col-md-4">
+  				<input type="hidden" class="form-control" id="id" placeholder="id" ng-model="dataEdit.id">
+  				<button type="submit" class="btn btn-primary" ng-click="saveInfo()">Guardar</button>  				
+  			</div>
+
+		</div>
+		<div class="form-group row">
+			<div class="col">Cantidad de Checked</div>
+			<div class="col">Visto: {{ visto }}</div>
+			<div class="col">No visto: {{ noVisto }}</div>
+		</div>
+
+		<div class="row" id="Table" > 
+			<div class="table-responsive">
+				<table border="1" class="table table-hover table-striped table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='id'; reverse =! reverse">Id</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='label'; reverse =! reverse">Label</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='criticality'; reverse =! reverse">Criticality</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='timestamp'; reverse =! reverse">Timestamp</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='eventBody.symbol'; reverse =! reverse">EventBody</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='status'; reverse =! reverse">Status</a></th>
+							<th><a style="cursor: pointer; text-decoration: none;" ng-click="column='checked'; reverse =! reverse">Checked</a></th>
+							<th></th>
+						</tr>
+					</thead>
+						<tr ng-repeat="item in data | limitTo:itemsForPag | limitTo:-10 | filter:busqueda | orderBy:column:reverse ">
+							<td>{{item.id}}</td>
+							<td ng-repeat="label in item.labels"> {{label}} </td>
+							<td>{{item.criticality}} </td>
+							<td>{{ item.timestamp }}</td>
+							<td>{{item.eventBody.symbol}}</td>
+							<td>{{item.status}}</td>
+							<td>{{item.checked}}</td>
+							<td><butto class="btn btn-primary" ng-click="loadInfoEdit(item.id)">Editar</butto></td>
+						</tr>						
+				</table>
+			</div>
+
+
+	        <button class="btn btn-primary" style="margin: 5px" ng-click="backPag()"> 
+	            <i class="fa fa-angle-double-left"></i> 
+	        </button>
+	        <div>{{itemsForPag }} / pag {{ parCurrent }}</div>
+	        <button class="btn btn-primary" style="margin: 5px"  ng-click="nextPag()"> 
+	            <i class="fa fa-angle-double-right"></i> 
+	        </button>
+
+
+		</div>
+	</div>
+	<script type="text/javascript" src="js/lib/angular.min.js"></script>	
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+        	
+</body>
+</html>
